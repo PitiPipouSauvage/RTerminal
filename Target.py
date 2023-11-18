@@ -6,7 +6,7 @@ import Payloads
 import os
 from Payloads import ransomware_v3
 
-icon = """
+icon = """\
 █▀█ █▀█ ▀▀▀█ 
 ░▄▀ ░▄▀ ░░█░ 
 █▄▄ █▄▄ ░▐▌░

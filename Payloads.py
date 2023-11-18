@@ -3,7 +3,7 @@ import socket
 import requests 
 import http.client 
 
-icon = """
+icon = """\
 █▀█ █▀█ ▀▀▀█ 
 ░▄▀ ░▄▀ ░░█░ 
 █▄▄ █▄▄ ░▐▌░

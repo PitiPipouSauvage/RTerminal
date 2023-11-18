@@ -2,7 +2,7 @@
 
 """Ransomware for educational purpuses only !!"""
 
-icon = """
+icon = """\
 █▀█ █▀█ ▀▀▀█ 
 ░▄▀ ░▄▀ ░░█░ 
 █▄▄ █▄▄ ░▐▌░
