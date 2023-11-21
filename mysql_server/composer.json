@@ -1,5 +1,6 @@
 {
     "require": {
-        "mnavarrocarter/fernet": "^3.0"
+        "mnavarrocarter/fernet": "^3.0",
+      "ext-sockets": "*"
     }
 }

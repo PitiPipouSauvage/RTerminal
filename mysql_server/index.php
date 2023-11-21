@@ -5,9 +5,9 @@ $icon = <<<ICON
 █▄▄ █▄▄ ░▐▌░
 ICON;
 
-$mySqlPassword;
-$mySqlUsername;
-$mySqlTable;
+$mySqlPassword = "";
+$mySqlUsername = "";
+$mySqlTable = "";
 $default_sending_port = 12009;
 $default_receiving_port = 12010;
 
@@ -38,13 +38,11 @@ $socket_header = array(
 );
 
 class connectionHandler extends Thread {
-    private $header = '';
-    private $body = '';
-    private $sampled_header = [];
-    private $sampled_body = [];
+    private string $header = '';
+    private string $body = '';
+    private array $sampled_header = [];
+    private array $sampled_body = [];
     public function __construct(private $connection_handler_socket, private $client_socket) {
-        $this->connection_handler_socket = $connection_handler_socket;
-        $this->client_socket = $client_socket;
     }
 
     public function run() {
@@ -65,9 +63,12 @@ class connectionHandler extends Thread {
             $this->header .= $this->sampled_header[$i];
         }
     }
-    public function get_subject(): string {
-        $subject = explode(' => ', $this->header);
-        return '';
+    public function get_intels(): array {
+        $subject = explode(' => ', $this->header)[1];
+        $level = explode(' => ', $this->header)[3];
+        $ip = explode(' => ', $this->header)[5];
+        $group_id = explode(' => ',$this->header)[7];
+        return [$subject, $level, $ip, $group_id];
     }
 
     public function isGarbage(): bool {
@@ -78,7 +79,7 @@ class connectionHandler extends Thread {
 
 
 // Got generateRandomString from stackoverflow
-function generateRandomString($length = 40) {
+function generateRandomString($length = 40): string {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-&`';
     $charactersLength = strlen($characters);
     $randomString = '';
@@ -89,7 +90,7 @@ function generateRandomString($length = 40) {
 }
 
 
-function generateRandomId($length = 10) {
+function generateRandomId($length = 10): string {
     global $used_ids;
     $numbers = '0123456789';
     $numbers_length = strlen($numbers);
@@ -112,7 +113,7 @@ function encryptPackage($header, $message): array {
     $header_key = 'cw_0x689RpI-jtRR7oE8h_eQsKImvJapLeSbXpwF4e4=';
 
     $header_fernet = MNC\Fernet::create($header_key);
-    $encrypted_header = $header_fernet->encode($header + $message_key);
+    $encrypted_header = $header_fernet->encode($header . $message_key);
 
     $message_fernet = MNC\Fernet::create($message_key);
     $encrypted_message = $message_fernet->encode($header_fernet->encode($message));
@@ -120,11 +121,11 @@ function encryptPackage($header, $message): array {
     return [$encrypted_header, $encrypted_message];
 }
 
-function sendEncryptedData($encrypted_header, $encrypted_message, $distant_bot) {
+function sendEncryptedData($encrypted_header, $encrypted_message, $distant_bot): void {
     global $default_sending_port;
     $id = generateRandomId();
-    $encrypted_header = $encrypted_header + "IDENTIFIER" + $id;
-    $encrypted_message = $encrypted_message + "IDENTIFIER" + $id;
+    $encrypted_header = $encrypted_header . "IDENTIFIER" . $id;
+    $encrypted_message = $encrypted_message . "IDENTIFIER" . $id;
 
     $header_socket = socket_create(AF_INET, SOCK_STREAM, 0);
     socket_connect($header_socket, $distant_bot, $default_sending_port);
@@ -145,7 +146,7 @@ function getData(): array {
     socket_bind($socket, '127.0.0.1', 12009);
     socket_listen($socket);
 
-    // Recieve data
+    // Receive data
     $client = socket_accept($socket);
     $header = socket_read($client, 2048);
     $message = socket_read($client, 8192);
@@ -153,7 +154,7 @@ function getData(): array {
     return [$header, $message];
 }
 
-function dataManagment(): bool {
+function dataManagement(): bool {
     try {
         $data = getData();  
         return True;   
@@ -164,10 +165,10 @@ function dataManagment(): bool {
 }
 
 function main_trash(): void {
-    $isRunning = dataManagment();
+    $isRunning = dataManagement();
 
     while ($isRunning) {
-        $isRunning = dataManagment();
+        $isRunning = dataManagement();
     }
 }
 
@@ -184,4 +185,4 @@ function main(): void {
         $connection_handler->run();
     }
 }
-?>
+
