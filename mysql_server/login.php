@@ -34,16 +34,3 @@ if ($isAuthenticated === False) {
 } else {
     header("./index.php");
 }
-?>
-
-<!DOCTYPE html>
-<html lang="fr">
-    <head><title>poop</title></head>
-    <body>
-
-<?php
-echo "poop";
-exit;
-?>
-    </body>
-</html>
