@@ -30,7 +30,7 @@ if ($doRemember_me) {
 }
 
 if ($isAuthenticated === False) {
-    header("./Login_v3/index.html");
+    header("./Login_v3/status.php");
 } else {
     header("./index.php");
 }

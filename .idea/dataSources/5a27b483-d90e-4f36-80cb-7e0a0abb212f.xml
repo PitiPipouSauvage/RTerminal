@@ -1401,8 +1401,8 @@
     </schema>
     <schema id="511" parent="1" name="rterminal">
       <Current>1</Current>
-      <IntrospectionTimestamp>2023-11-28.22:01:42</IntrospectionTimestamp>
-      <LocalIntrospectionTimestamp>2023-11-28.20:01:42</LocalIntrospectionTimestamp>
+      <IntrospectionTimestamp>2023-11-29.22:42:52</IntrospectionTimestamp>
+      <LocalIntrospectionTimestamp>2023-11-29.20:42:52</LocalIntrospectionTimestamp>
       <CollationName>latin1_swedish_ci</CollationName>
     </schema>
     <schema id="512" parent="1" name="sys">
@@ -1430,30 +1430,70 @@
       <Engine>InnoDB</Engine>
       <CollationName>latin1_swedish_ci</CollationName>
     </table>
-    <column id="520" parent="519" name="user_id">
+    <table id="520" parent="511" name="bots">
+      <Engine>InnoDB</Engine>
+      <CollationName>latin1_swedish_ci</CollationName>
+    </table>
+    <column id="521" parent="519" name="user_id">
       <AutoIncrement>5</AutoIncrement>
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="521" parent="519" name="username">
+    <column id="522" parent="519" name="username">
       <DasType>varchar(16)|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="522" parent="519" name="password">
+    <column id="523" parent="519" name="password">
       <DasType>varchar(300)|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="523" parent="519" name="level">
+    <column id="524" parent="519" name="level">
       <DasType>int(11)|0s</DasType>
       <Position>4</Position>
     </column>
-    <index id="524" parent="519" name="PRIMARY">
+    <index id="525" parent="519" name="PRIMARY">
       <ColNames>user_id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="525" parent="519" name="PRIMARY">
+    <key id="526" parent="519" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
+    </key>
+    <column id="527" parent="520" name="bot_id">
+      <AutoIncrement>1</AutoIncrement>
+      <DasType>int(11)|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+    </column>
+    <column id="528" parent="520" name="ip_addressV4">
+      <DasType>varchar(20)|0s</DasType>
+      <Position>2</Position>
+    </column>
+    <column id="529" parent="520" name="role">
+      <DasType>varchar(15)|0s</DasType>
+      <Position>3</Position>
+    </column>
+    <column id="530" parent="520" name="group_id">
+      <DasType>int(11)|0s</DasType>
+      <Position>4</Position>
+    </column>
+    <column id="531" parent="520" name="state">
+      <DasType>varchar(10)|0s</DasType>
+      <Position>5</Position>
+    </column>
+    <column id="532" parent="520" name="hash_rate">
+      <DasType>varchar(10)|0s</DasType>
+      <Position>6</Position>
+    </column>
+    <index id="533" parent="520" name="PRIMARY">
+      <ColNames>bot_id</ColNames>
+      <Type>btree</Type>
+      <Unique>1</Unique>
+    </index>
+    <key id="534" parent="520" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>

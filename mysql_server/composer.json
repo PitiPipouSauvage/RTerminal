@@ -2,6 +2,7 @@
     "require": {
         "mnavarrocarter/fernet": "^3.0",
       "ext-sockets": "*",
-      "ext-mysqli": "*"
+      "ext-mysqli": "*",
+      "ext-pdo": "*"
     }
 }

