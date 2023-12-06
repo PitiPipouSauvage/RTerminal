@@ -9,7 +9,7 @@ def encrypt(string) -> str:
     return new_string
 
 
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser(prog='encrypt.py')
 
     parser.add_argument('-s', '--string')

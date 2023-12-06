@@ -9,6 +9,7 @@ icon = """\
 █▄▄ █▄▄ ░▐▌░
 """
 
+
 class Payloads:
     ammount = 0
     def __init__(self):
