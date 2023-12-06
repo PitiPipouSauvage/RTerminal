@@ -1,0 +1,19 @@
+Client requests:
+- tuple(pwd, machine_ip, user)
+- output
+- Exceptions
+
+Commander ports:
+Send instructions : 12005
+Get orders: 12006
+Errors: 12009
+Client connections: 12008 + number of active connections
+Send errors: 12010
+
+Client ports:
+Get commands: 12005
+Output socket: 12006
+Return error: 12010
+
+
+
