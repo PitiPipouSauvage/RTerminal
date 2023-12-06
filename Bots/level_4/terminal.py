@@ -7,7 +7,7 @@ encrypted_password = encrypt('TROMPITA')
 
 
 def launch_admin_panel():
-    subprocess.run("./admin_panel.c")
+    subprocess.run("./RTerminal.exe")
 
 
 def main():
