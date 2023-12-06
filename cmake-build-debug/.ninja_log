@@ -1,0 +1,16 @@
+# ninja log v5
+2	67	7236015970165638	CMakeFiles/RTerminal.dir/Bots/level_4/admin_panel.c.obj	3c570ac974e095bc
+358	1884	7236003650207972	RTerminal.exe	b8a4ed6aff2cf4ea
+0	123	7236021711615304	build.ninja	5dff79e3a4e78c3c
+2	67	7236021712841970	CMakeFiles/RTerminal.dir/Bots/level_4/admin_panel.c.obj	3c570ac974e095bc
+2	75	7236026685241752	CMakeFiles/RTerminal.dir/Bots/level_4/admin_panel.c.obj	3c570ac974e095bc
+2	69	7236027885732377	CMakeFiles/RTerminal.dir/Bots/level_4/admin_panel.c.obj	3c570ac974e095bc
+3	76	7236028076360701	CMakeFiles/RTerminal.dir/Bots/level_4/admin_panel.c.obj	3c570ac974e095bc
+2	69	7236043985891190	CMakeFiles/RTerminal.dir/Bots/level_4/admin_panel.c.obj	3c570ac974e095bc
+69	163	7236043986798875	RTerminal.exe	b8a4ed6aff2cf4ea
+2	69	7236045066230260	CMakeFiles/RTerminal.dir/Bots/level_4/admin_panel.c.obj	3c570ac974e095bc
+69	157	7236045067083193	RTerminal.exe	b8a4ed6aff2cf4ea
+2	71	7236045370402110	CMakeFiles/RTerminal.dir/Bots/level_4/admin_panel.c.obj	3c570ac974e095bc
+71	160	7236045371243990	RTerminal.exe	b8a4ed6aff2cf4ea
+2	74	7236058216212680	CMakeFiles/RTerminal.dir/Bots/level_4/admin_panel.c.obj	3c570ac974e095bc
+75	167	7236058217100246	RTerminal.exe	b8a4ed6aff2cf4ea
