@@ -21,7 +21,8 @@ int main() {
     if ((strlen(username) > 0) && (username[strlen(username) - 1] == '\n'))
         username[strlen(username) - 1] = '\0';
 
-    printf("Enter password : ");
+    char *password = getpass("Enter password : ");
+    printf("%s", password);
 
 
     return 0;
