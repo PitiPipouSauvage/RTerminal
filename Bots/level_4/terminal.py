@@ -1,38 +1,35 @@
-import subprocess
+import os
 import socket
-import threading
-from Bots.utils.Encrypt import encrypt
+import subprocess
+import sys
+import threading 
 
-encrypted_password = encrypt('TROMPITA')
+sys.path.insert(1, '../utils/')
+from Encrypt import encrypt
 
+encrypted_admin_password = encrypt('hello')
+encrypted_admin_username = encrypt('no227')
 
-def launch_admin_panel():
-    subprocess.run("./RTerminal.exe")
+def authenticate():
+    sys.stdout.write('Enter username : ')
+    for line in list(sys.stdin):
+        if line == '\n':
+            break
+        print(line)
 
+    print('end')
 
 def main():
-    new_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    new_socket.bind(('localhost', 12010))
+    with open('./bin_addr.txt', 'w') as bin_addr:
+        all_commands = bin_addr.readlines()
 
-    launcher = threading.Thread(target=launch_admin_panel)
-    launcher.start()
+    command_dir = {}
+    for command in all_commands:
+        command_dir[command.split(':')[0]] = command.split(':')[1]
 
-    new_socket.listen()
-    client_socket, addr = new_socket.accept()
-    password = ""
-
-    password += new_socket.recv(1024).decode('utf-8')
-
-    encrypted_request = encrypt(password)
-
-    if encrypted_request == encrypted_password:
-        answer = True
-    else:
-        answer = False
-
-    client_socket.send(answer)
-    launcher.join()
-
+    isActive = True
+    while isActive:
+        sys.stdout.write('') 
 
 if __name__ == '__main__':
-    main()
+    authenticate()
