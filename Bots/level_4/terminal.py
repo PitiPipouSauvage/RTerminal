@@ -1,23 +1,25 @@
+import pwinput
 import os
 import socket
 import subprocess
 import sys
 import threading 
 
-sys.path.insert(1, '../utils/')
 from Encrypt import encrypt
 
 encrypted_admin_password = encrypt('hello')
 encrypted_admin_username = encrypt('no227')
 
+
 def authenticate():
     sys.stdout.write('Enter username : ')
-    for line in list(sys.stdin):
-        if line == '\n':
-            break
-        print(line)
+    for line in sys.stdin:
+        username = line
+        break
 
-    print('end')
+    password = pwinput.pwinput(prompt='Enter password : ')
+    print(password)
+
 
 def main():
     with open('./bin_addr.txt', 'w') as bin_addr:
@@ -27,9 +29,11 @@ def main():
     for command in all_commands:
         command_dir[command.split(':')[0]] = command.split(':')[1]
 
-    isActive = True
-    while isActive:
+    is_active = True
+    while is_active:
         sys.stdout.write('') 
+
 
 if __name__ == '__main__':
     authenticate()
+    os.system('pause')
