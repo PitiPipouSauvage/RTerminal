@@ -27,7 +27,9 @@ def authenticate() -> bool:
                 if list(users.values())[user_id] == encrypt(password):
                     return True
             break
-        sys.stdout.write(f'You have {3 - attempts} attempts remaining \n')
+        sys.stdout.write((2 - attempts)*f'You have {2 - attempts} attempts remaining \r')
+        sys.stdout.write((-1 + attempts == 1)*'Either your username or your password is incorrect ')
+        sys.stdout.write('\n')
         sys.stdout.flush()
     return False
 
@@ -52,7 +54,7 @@ if __name__ == '__main__':
     # Authentication
     isAuthenticated = authenticate()
     if not isAuthenticated:
-        sys.stdout.write('Either your username or password is incorrect \n')
+
         sys.stdout.flush()
         exit(-1)
 
