@@ -1,4 +1,5 @@
-import socket 
+import argparse
+import socket
 import threading 
 import time
 
@@ -8,32 +9,37 @@ icon = """\
 █▄▄ █▄▄ ░▐▌░
 """
 
+argument_parser = argparse.ArgumentParser(prog='Server.py')
+argument_parser.add_argument('-c', '--commander')
+args = argument_parser.parse_args()
+
+
 class Server:
     def __init__(self, client_ip: str):
-       self.client_ip = client_ip
-       self.pwd = ''
-       self.machine_ip = ''
-       self.user = ''
+        self.client_ip = client_ip
+        self.pwd = ''
+        self.machine_ip = ''
+        self.user = ''
 
-       # Initializing the socket to send commands
-       self.sending_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-       self.sending_socket.connect((self.client_ip, 5000))
+        # Initializing the socket to send commands
+        self.sending_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sending_socket.connect((self.client_ip, 5000))
 
-       # Initializing the socket to receive outputs
-       self.reception_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-       self.reception_socket.bind(('localhost', 5001))
+        # Initializing the socket to receive outputs
+        self.reception_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.reception_socket.bind(('localhost', 5001))
 
-       # Starting the error managing thread
-       self.error_thread = threading.Thread(target=self.listenErrors)
-       self.error_thread.start()
+        # Starting the error managing thread
+        self.error_thread = threading.Thread(target=self.listenErrors)
+        self.error_thread.start()
 
-       threading.Thread(target=self.listen_for_client)
+        threading.Thread(target=self.listen_for_client)
 
     def listen_for_client(self):
         self.reception_socket.listen()
         client_socket, address = self.reception_socket.accept()
 
-        # Queue
+    # Queue
         while len(threading.enumerate()) > 2:
             client_socket.send(f'There are {len(threading.enumerate()) - 1} clients ahead of you. Refresh in 30sec'.encode('utf-8'))
             time.sleep(30)
@@ -56,7 +62,7 @@ class Server:
         if self.user != 'root':
             prefix = '~'
             prompt = f"[{self.pwd}][{self.machine_ip}]{prefix}"
-            return prompt 
+            return prompt
         prefix = '#'
         prompt = f"[{self.pwd}][{self.machine_ip}]{prefix}"
         return prompt
@@ -69,7 +75,7 @@ class Server:
         receiving_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         receiving_socket.bind((socket.gethostname(), 5001))
         receiving_socket.listen()
-        
+
         print(receiving_socket.recv(8192).decode())
 
         for thread in threading.enumerate():
@@ -78,9 +84,16 @@ class Server:
     def get_command(self):
         # Function to receive the wanted command
         command = input(self.display())
-        return command 
-    
+        return command
+
     def send_command(self, send_socket: socket.socket):
         # Function to send commands to client
         command = self.get_command()
-        send_socket.send(command.encode('utf-8')) 
+        send_socket.send(command.encode('utf-8'))
+
+
+def main():
+    server = Server(args.commander)
+
+
+main()
