@@ -114,11 +114,11 @@ class Commander:
                 active_connections.append((client_socket, client_addr))
 
     @staticmethod
-    def encrypt_package(self, package_header: dict, message: str):
+    def encrypt_package(package_header: dict, message: str):
         fernet = Fernet(b'cw_0x689RpI-jtRR7oE8h_eQsKImvJapLeSbXpwF4e4=')
         str_header = ''
-        for i in range(len(package_header.keys())):
-            str_header += package_header.keys()[i] + ' => ' + package_header.values()[i] + '\n'
+        for i in range(len(list(package_header.keys()))):
+            str_header += list(package_header.keys())[i] + ' => ' + list(package_header.values())[i] + '\n'
 
         message_key = generate_random_string()
         str_header += f"message key => {message_key}"
