@@ -4,7 +4,8 @@ import sys
 import argparse
 import utils.Payloads as Payloads
 import os
-import utils.ransomware_v3 as ransomware_v3
+import utils
+from utils import ransomware_v3
 
 icon = """\
 █▀█ █▀█ ▀▀▀█ 
