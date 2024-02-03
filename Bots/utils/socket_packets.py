@@ -32,6 +32,7 @@ def generate_id(used_ids, length=10) -> int:
     return int(id) 
 
 
+# MODIFY WITH RSA /!\
 def generate_header(level: int, subject_id: int) -> tuple:
     """This function generates a header exclusivly in numbers"""
     new_key = generate_random_string()
@@ -46,4 +47,4 @@ def generate_package(header: bytes, message: str, message_key: bytes) -> bytes:
     message_fernet = Fernet(message_key)
     encrypted_body = message_fernet.encrypt(message.encode('utf-8'))
     encrypted_message = f'{header}/{encrypted_body}'
-    return encrypted_message
+    return encrypted_message.encode('utf-8')
