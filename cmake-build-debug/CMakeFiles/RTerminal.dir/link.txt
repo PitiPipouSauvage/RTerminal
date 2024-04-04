@@ -1,1 +1,0 @@
-/usr/bin/cc -g CMakeFiles/RTerminal.dir/Bots/level_4/admin_panel.c.o -o RTerminal 

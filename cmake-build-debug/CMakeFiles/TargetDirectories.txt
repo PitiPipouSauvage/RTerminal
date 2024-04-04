@@ -1,3 +1,0 @@
-/home/nsasurveillancevan/Documents/RTerminal/cmake-build-debug/CMakeFiles/RTerminal.dir
-/home/nsasurveillancevan/Documents/RTerminal/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/nsasurveillancevan/Documents/RTerminal/cmake-build-debug/CMakeFiles/rebuild_cache.dir
