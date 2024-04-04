@@ -1,4 +1,4 @@
-## This is a botnet project named RTerminal
+## This is a Remote Administration Tool project named RTerminal
 This project is aimed at testing my capability to build such a project.
 Anyone is welcome to contribute.
 
