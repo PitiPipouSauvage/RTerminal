@@ -57,45 +57,58 @@ def authenticate() -> bool:
     return False
 
 
-def connect_to_target(target_ip, target_port):
+def connect_to_target(target_ip, target_port) -> socket.socket:
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect((target_ip, target_port))
 
-    return socket
+    return sock
 
 
-def execute_command(sock, command):
+def execute_command(sock: socket.socket, command: str) -> str:
+    command += 'END'
     total_sent = 0
     while total_sent < len(command):
         sent = sock.send(command.encode()[total_sent:])
         if sent == 0:
             return False 
         total_sent += sent 
+    sock.close()
+
+    isNotBinded = True
+    while isNotBinded:
+        try:
+            new_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            new_sock.bind(('127.0.0.1', 25565))
+            isNotBinded = False 
+        
+        except:
+            continue
+
+    new_sock.listen()
+    client_socket, client_ip = sock.accept()
     
-    chunks = []
-    bytes_recd = 0
-    bytes_recd_prv = 0
-    while bytes_recd != bytes_recd_prv or bytes_recd_prv == 0:
-        chunk = sock.recv(2048)
-        chunks.append(chunk)
-        bytes_recd_prv = bytes_recd
-        bytes_recd += len(chunk)
+    output = b''
+    while output[-3:] != b'END':
+        buffer = client_socket.recv(2048)
+        output += buffer 
     
-    return (b"".join(chunks)).decode('utf-8')
+    new_sock.close()
+    return output  
 
 
-def main():
+def main() -> None:
     isRunning = True 
     target_ip, target_port = input("Enter target ip and port as such <target_ip> <target_port> : ").split(' ')
     target_port = int(target_port)
-    sock = connect_to_target(target_ip, target_port)
     while isRunning:
-        command = input(f"{target_ip} >>> ")
+        sock = connect_to_target(target_ip, target_port)
+        command = input(f"[{target_ip}]>>> ")
         output = execute_command(sock, command)
         if output:
             print(output)
             continue 
         print("Something went wrong !") 
+    sock.close()
 
 
 if __name__ == '__main__':
