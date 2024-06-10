@@ -1,3 +1,4 @@
+import mariadb
 import pwinput
 import socket 
 import sys
@@ -7,6 +8,31 @@ from utils.Encrypt import encrypt
 users = {
     encrypt('no227'): encrypt('hello')
 }
+
+def connect_to_db(server_ip: str, server_port=3306) -> mariadb.connect:
+    try:
+        conn = mariadb.connect(
+            user="checker",
+            password="checker",
+            host=server_ip,
+            port=server_port,
+            database="admins"
+        )
+
+    except:
+        raise ValueError('Incorect server ip or port.')
+    
+    cursor = conn.cursor()
+    return cursor
+
+
+def get_user(server_ip: str, username: str, password: str, server_port=3306) -> bool:
+    cursor = connect_to_db(server_ip, server_port)
+    cursor.execute('SELECT username, password FROM admins WHERE username=? AND password=?', (username, encrypt(password)))
+    result = [(username, password) for username, password in cursor]
+    if len(result) == 1:
+        return True
+    return False
 
 
 def authenticate() -> bool:
@@ -21,11 +47,9 @@ def authenticate() -> bool:
 
         password = pwinput.pwinput(prompt='Enter password : ')
 
-        for user_id in range(len(list(users.keys()))):
-            if list(users.keys())[user_id] == encrypt(username):
-                if list(users.values())[user_id] == encrypt(password):
-                    return True
-            break
+        if get_user(sys.argv[1], username, password, server_port=int(sys.argv[2])):
+            return True
+
         sys.stdout.write((2 - attempts)*f'You have {2 - attempts} attempts remaining \r')
         sys.stdout.write((-1 + attempts == 1)*'Either your username or your password is incorrect ')
         sys.stdout.write('\n')
