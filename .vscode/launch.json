@@ -7,9 +7,9 @@
       "request": "launch",
       "args": [],
       "stopAtEntry": false,
-      "externalConsole": false,
-      "cwd": "/home/gravedigger/Documents/Dev/RTerminal",
-      "program": "/home/gravedigger/Documents/Dev/RTerminal/build/Debug/outDebug",
+      "externalConsole": true,
+      "cwd": "c:/Users/thoma/OneDrive/Documents/RTerminal/Target/utils",
+      "program": "c:/Users/thoma/OneDrive/Documents/RTerminal/Target/utils/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
