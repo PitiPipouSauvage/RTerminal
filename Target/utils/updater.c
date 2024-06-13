@@ -34,11 +34,19 @@ word_list parse_instruction(const char* instruction) {
     const char ** wordlist = (const char **)malloc(sizeof(const char*) * length_intruction);
 
     int j = 0;
+    int k = 0;
     for (int i=0; i<length_intruction; i++) {
-        if (instruction[i] == '/') {
-            word_list[j];
+        if (instruction[i] == '\\') {
+            wordlist[j] = slice(instruction, k, i);
+            k = i;
         }
     }
+
+    word_list commands;
+    commands.wordlist = wordlist;
+    commands.nbWords = j + 1;
+
+    return commands
 }
 
 
@@ -62,9 +70,9 @@ int main() {
         int *client_fd = malloc(sizeof(int));
 
         *client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_addr_len);
-        char answer[buffer]; 
+        const char* answer; 
         read(server_fd, answer, buffer);
-        
+        word_list commands = parse_instruction(answer);
     }
 
     return 0;
