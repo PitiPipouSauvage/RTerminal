@@ -26,8 +26,16 @@ void downloader(const char* url, const char** file_names) {
 
 int main() {
 	const char** files = (const char**)malloc(sizeof(const char*)*2);
+#ifdef __linux__
 	files[0] = "client";
 	files[1] = "updater";
+#elif _WIN32
+	files[0] = "client.exe";
+	files[1] = "updater.exe";
+#elif __APPLE__
+	files[0] = "apple_client";
+	files[1] = "apple_updater";
+#endif
 	char* url = "127.0.0.1";
 	downloader(url, files);
 	return 0;
