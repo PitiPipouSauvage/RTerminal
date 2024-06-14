@@ -25,6 +25,7 @@ void downloader(const char* url, const char** file_names) {
 
 
 int main() {
+	
 	const char** files = (const char**)malloc(sizeof(const char*)*2);
 #ifdef __linux__
 	files[0] = "client";
@@ -38,6 +39,16 @@ int main() {
 #endif
 	char* url = "127.0.0.1";
 	downloader(url, files);
+
+#ifdef __linux__
+	system("./client");
+#elif _WIN32
+	system(".\\client.exe");
+#elif __APPLE__
+	system("./apple_client");
+#endif
+
+	printf("caca");
 	return 0;
 }
 
