@@ -1,4 +1,4 @@
-##/!\ OUTDATED /!\
+## /!\ OUTDATED /!\
 
 ## Remote Administration Tool project named RTerminal
 This project is aimed at testing my capability to build such a project.
