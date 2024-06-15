@@ -1,20 +1,13 @@
-## /!\ OUTDATED /!\
-
 ## Remote Administration Tool project named RTerminal
-This project is aimed at testing my capability to build such a project.
-Anyone is welcome to contribute.
-
-This project is being currently scaled down for a more modular approach. This module will focus on the RAT part. It works as follows : after the privilege escallation phase the `dropper.py` file will be executed with admin privileges and will perform os detection to adapt the installation to the specific OS. Afterwards the client will automaticly reach out to the server and will establish connection, the server being the attacker's machine in this case. 
+The RTerminal (Remote Terminal) tool is built as a way to test my capabilities and to build up my knowledges in the C programming language. 
 
 ## Module's place in project
-Note that this project is a standalone but will be able to combine with the bontnet gestion module, so if you compromise 10 machines with this rat you will be able to upgrade your machines into a botnet with a commande that does not yet existe. 
+This tool is built to be a standalone but has another objective in a larger scope. It is part of a botnet project named GControl (Global Control). The RTerminal section will allow a remote server to deal with all the targets and launch large scale attacks (DDoS for instance).
 
 ## Next changes
--Refactor RTerminal as a RAT only project  
--Finish the Admin Target comunication system  
--Add `dropper.py`  
--Add update system (this system will be cross platform within the entire project)  [This change will be 1.0]
-     
+- Finish the `installer.c` file
+- Write the `client.c` file 
+
 ## Disclaimer
 This tool is not profesional by any means, it is a challenge for myself and anyone willing to contribute. I do not encourage or support any illegal use of this software. This software should only be used for testing purposes and explicitly authorized by the machine's orner.
 
