@@ -1,7 +1,7 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <netdb.h>
-#include <pthreads.h>
+#include <pthread.h>
 #include <sys/socket.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -10,6 +10,7 @@
 #include <unistd.h>
 
 //==========START OF GLOBAL AREA==========//
+
 #ifdef _WIN32
 #define OS "WIN"
 #elif __APPLE__
@@ -30,11 +31,11 @@ struct Global {
 //==========START OF PARSING AREA==========// 
 
 struct word_list {
-    const char**  wordlist;
+    char**  wordlist;
     int nbWords;
 }; 
 
-const char* slice(const char* string, int start, size_t end) {
+char* slice(char* string, int start, size_t end) {
     if (end > strlen(string)) {
         return "None";
     }
@@ -52,14 +53,14 @@ const char* slice(const char* string, int start, size_t end) {
 }
 
 
-struct word_list parse_instruction(const char* instruction) {
+struct word_list split(char* instruction, char* separator) {
     size_t length_intruction = strlen(instruction);
-    const char ** wordlist = (const char**)malloc(sizeof(const char*) * length_intruction);
+    char ** wordlist = (char**)malloc(sizeof(char*) * length_intruction);
 
     int j = 0;
     int k = 0;
     for (int i=0; i<length_intruction; i++) {
-        if (instruction[i] == '\\') {
+        if (instruction[i] == (char)*separator) {
             wordlist[j] = slice(instruction, k, i);
             k = i;
         }
@@ -75,16 +76,38 @@ struct word_list parse_instruction(const char* instruction) {
 //==========END OF PARSING AREA==========//
 //==========START OF NETWORK AREA==========//
 
-typedef socket_handle int;
+typedef int socket_handle;
 
-void* handle_client(socket_handle* client_sock) {
+void* handle_client(void* client_sock_void) {
+	int client_sock = *((int*) client_sock_void);
     char buffer[256000] = { 0 };
     size_t valread;
-    valread = read(*client_sock, buffer, 1024 - 1);
+    valread = read(client_sock, buffer, 1024 - 1);
 
-    FILE* output = popen((buffer));
+	char* command = buffer;
+	struct word_list splitted_command;
+	splitted_command = split(command, "-");
+	
+	char* tags = malloc(sizeof(char) * (splitted_command.nbWords - 1));
+	for (int i=1; i<splitted_command.nbWords; i++) {
+		strcat(tags, splitted_command.wordlist[i]);
+	}
 
-    pthread_exit(NULL);
+	char* output = malloc(sizeof(char) * 2048);
+    FILE* output_file = popen(buffer, tags);
+	fread(output, 1024, 2, output_file);
+
+	send(client_sock, output, strlen(output), 0);
+	
+	close(client_sock);
+	free(output);
+	free(tags);
+    
+	for (int i=0; i<splitted_command.nbWords; i++) {
+		free(splitted_command.wordlist[i]);
+	}
+
+	pthread_exit(NULL);
 }
 
 int setup_server() {
@@ -95,17 +118,18 @@ int setup_server() {
         memset(&hints, 0, sizeof(hints));
         hints.ai_family = AF_INET;
         hints.ai_socktype = SOCK_STREAM;
-        hits.ai_flag = AI_PASSIVE;
+        hints.ai_flags = AI_PASSIVE;
 
         int status = getaddrinfo("127.0.0.1", "80", &hints, &res);
 
         socket_handle sock = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
         bind(sock, res->ai_addr, res->ai_addrlen);
         listen(sock, 20);
-        socket_handle client_sock = accept(sock, NULL, sizeof(NULL));
+        socket_handle client_sock = accept(sock, NULL, (int *)sizeof(NULL));
 
+		void* client_sock_void = &client_sock;
         pthread_t thread_handle;
-        int code = pthread_create(&thread_handle, NULL, handle_client, &client_sock);
+        int code = pthread_create(&thread_handle, NULL, &handle_client, client_sock_void);
     }
     return 0;
 }
@@ -114,12 +138,6 @@ int setup_server() {
 
 
 //==========END OF NETWORK AREA==========//
-//==========START OF SYSTEM AREA==========//
-
-
-
-//==========END OF SYSTEM AREA==========//
-
 
 int main() {
     global_var.os = OS;
@@ -127,7 +145,7 @@ int main() {
     port[0] = 25565;
     global_var.port = port; 
 
-    printf("Hello World");
-    system("pause");
+	int status = setup_server(); 
     return 0;
 }
+
