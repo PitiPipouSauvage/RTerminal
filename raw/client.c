@@ -84,7 +84,7 @@ void* handle_client(void* client_sock_void) {
     size_t valread;
     valread = read(client_sock, buffer, 1024 - 1);
 
-	char* command = buffer;
+	char* command= buffer;
 	struct word_list splitted_command;
 	splitted_command = split(command, "-");
 	

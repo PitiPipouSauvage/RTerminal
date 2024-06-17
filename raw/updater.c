@@ -8,12 +8,14 @@
 
 #define SO_KEEPALIVE 9;
 
-struct word_list {
-    const char **  wordlist;
-    int nbWords;
-}
+//==========START OF PARSING AREA==========//
 
-const char* slice(const char* string, int start, int end) {
+struct word_list {
+    char**  wordlist;
+    int nbWords;
+}; 
+
+char* slice(char* string, int start, size_t end) {
     if (end > strlen(string)) {
         return "None";
     }
@@ -21,60 +23,78 @@ const char* slice(const char* string, int start, int end) {
         return "None";
     }
 
-    const char* result = "";
+    char* result = "";
     for (int i=start; i < end; i++) {
-        const char* result = result + string[i] 
+        char* res;
+        res = result + string[i];
+        char* result = res; 
     }    
     return result;
 }
 
 
-word_list parse_instruction(const char* instruction) {
-    int length_intruction = strlen(instruction);
-    const char ** wordlist = (const char **)malloc(sizeof(const char*) * length_intruction);
+struct word_list split(char* instruction, char* separator) {
+    size_t length_intruction = strlen(instruction);
+    char ** wordlist = (char**)malloc(sizeof(char*) * length_intruction);
 
     int j = 0;
     int k = 0;
     for (int i=0; i<length_intruction; i++) {
-        if (instruction[i] == '\\') {
+        if (instruction[i] == (char)*separator) {
             wordlist[j] = slice(instruction, k, i);
             k = i;
         }
     }
 
-    word_list commands;
+    struct word_list commands;
     commands.wordlist = wordlist;
     commands.nbWords = j + 1;
 
-    return commands
+    return commands;
 }
 
+//==========END OF PARSING AREA==========//
+//==========START OF DOWNLOADING AREA==========//
 
-int main() {
-    int server_fd;
-    int buffer = 2048;
-    struct sockaddr_in server_addr;
+#define MAX_FILE_SIZE 5120000
+#define MAX_FILENAME_SIZE 32
 
-    server_fd = socket(AF_INET, SOCK_STREAM, 0);
 
-    server_addr.sin_family = AF_INET;
-    server_addr.sin_addr.s_addr = INADDR_ANY;
-    server_addr.sin_port = htons(25566);
+void downloader(const char* url, const char** file_names) {
+    CURL* curl;
+    for (int i=0; i<sizeof(file_names) / sizeof(file_names[0]); i++) {
+        const char* outfilename = file_names[i];
+        curl = curl_easy_init();
+        if (curl) {
+            FILE* file = fopen(outfilename, "wb");
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, file);
+            curl_easy_perform(curl);
+            fclose(file);
+        }
+        curl_easy_cleanup(curl);
+        curl_global_cleanup();
+    }
+}
 
-    bind(server_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)); 
-    listen(server_fd, 10);
+//==========END OF DOWNLOADING AREA==========//
 
-    while (1) {
-        struct sockaddr_in client_addr;
-        socklen_t client_addr_len = sizeof(client_addr);
-        int *client_fd = malloc(sizeof(int));
 
-        *client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_addr_len);
-        const char* answer; 
-        read(server_fd, answer, buffer);
-        word_list commands = parse_instruction(answer);
+int main(int argc, char* argv[]) {
+    char** files = (const char**)malloc(sizeof(const char*)*(argc - 1));
+    for (int i=1; i < argc; i++) {
+        files[i] = argv[i];
     }
 
+    char* url = "127.0.0.1";
+    downloader(url, files);
+
+#ifdef __linux__
+    system("./client");
+#elif _WIN32
+    system(".\\client.exe");
+#elif __APPLE__
+    system("./apple_client");
+#endif
     return 0;
 }
 

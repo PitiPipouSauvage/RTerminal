@@ -47,8 +47,6 @@ int main() {
 #elif __APPLE__
 	system("./apple_client");
 #endif
-
-	printf("caca");
 	return 0;
 }
 
