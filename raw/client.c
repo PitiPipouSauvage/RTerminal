@@ -25,7 +25,7 @@ struct Global {
     const char* os;
     const char* ip;
     int* port;
-} global_var;
+} 
 
 //==========END OF GLOBAL AREA==========//
 //==========START OF PARSING AREA==========// 
@@ -76,8 +76,8 @@ struct word_list split(char* instruction, char* separator) {
 //==========END OF PARSING AREA==========//
 //==========START OF FUNCTIONALITY AREA==========//
 
-void cam() {
-    return NULL;
+void cam(struct Global global_vars) {
+    return NULL
 }
 
 //==========END OF FUNCTIONALITY AREA==========//
@@ -89,7 +89,7 @@ struct associative_array {
     struct word_list values;
 }
 
-void* handle_client(void* client_sock_void) {
+void* handle_client(void* client_sock_void, struct Global global_vars) {
     struct word_list keywords;
     keywords.wordlist = (char**)malloc(sizeof(char*) * 1);
     keywords.wordlist[0] = "cam";
@@ -97,7 +97,7 @@ void* handle_client(void* client_sock_void) {
 
     struct word_list funcs;
     funcs.wordlist = (char**)malloc(sizeof(char*) * 1);
-    void (*camPtr)();
+    void (*camPtr)(struct Global global_vars);
     camPtr = &cam;
     funcs.wordlist[0] = camPtr;
     funcs.nbWords = 1;    
@@ -117,7 +117,7 @@ void* handle_client(void* client_sock_void) {
 
     for (int i=0; i<commands.keys.nbWords; i++) {
         if (splitted_command[0] == commands.keys.wordlist[i]) {
-            *commands.values.wordlist[i];
+            *commands.values.wordlist[i](global_vars);
         }
     }
 	
@@ -147,6 +147,8 @@ int setup_server() {
     struct sockaddr socket_data;
     struct addrinfo hints;
     struct addrinfo* res;
+    struct Global global_var;
+
     while (1) {
         memset(&hints, 0, sizeof(hints));
         hints.ai_family = AF_INET;
@@ -159,6 +161,10 @@ int setup_server() {
         bind(sock, res->ai_addr, res->ai_addrlen);
         listen(sock, 20);
         socket_handle client_sock = accept(sock, NULL, (int *)sizeof(NULL));
+
+        char distant_ip[INET_ADDRSTRLEN];
+        inet_ntop(AF_INET, &ipAddr, distant_ip; INET_ADDRSTRLEN);
+        global_var.ip = (char*)distant_ip;
 
 		void* client_sock_void = &client_sock;
         pthread_t thread_handle;
