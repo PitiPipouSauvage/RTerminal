@@ -74,11 +74,38 @@ struct word_list split(char* instruction, char* separator) {
 }
 
 //==========END OF PARSING AREA==========//
+//==========START OF FUNCTIONALITY AREA==========//
+
+void cam() {
+    return NULL;
+}
+
+//==========END OF FUNCTIONALITY AREA==========//
 //==========START OF NETWORK AREA==========//
 
 typedef int socket_handle;
+struct associative_array {
+    struct word_list keys;
+    struct word_list values;
+}
 
 void* handle_client(void* client_sock_void) {
+    struct word_list keywords;
+    keywords.wordlist = (char**)malloc(sizeof(char*) * 1);
+    keywords.wordlist[0] = "cam";
+    keywords.nbWords = 1;
+
+    struct word_list funcs;
+    funcs.wordlist = (char**)malloc(sizeof(char*) * 1);
+    void (*camPtr)();
+    camPtr = &cam;
+    funcs.wordlist[0] = camPtr;
+    funcs.nbWords = 1;    
+
+    struct associative_array commands;
+    commands.keys = keywords;
+    commands.values = funcs;
+
 	int client_sock = *((int*) client_sock_void);
     char buffer[256000] = { 0 };
     size_t valread;
@@ -87,6 +114,12 @@ void* handle_client(void* client_sock_void) {
 	char* command= buffer;
 	struct word_list splitted_command;
 	splitted_command = split(command, "-");
+
+    for (int i=0; i<commands.keys.nbWords; i++) {
+        if (splitted_command[0] == commands.keys.wordlist[i]) {
+            *commands.values.wordlist[i];
+        }
+    }
 	
 	char* tags = malloc(sizeof(char) * (splitted_command.nbWords - 1));
 	for (int i=1; i<splitted_command.nbWords; i++) {
@@ -133,9 +166,6 @@ int setup_server() {
     }
     return 0;
 }
-
-
-
 
 //==========END OF NETWORK AREA==========//
 
